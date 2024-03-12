@@ -1,0 +1,27 @@
+---
+- name: Install node and npm
+  hosts: testserver
+  become: true
+  tasks: 
+    - name: update apt
+      apt: 
+        update_cache=yes
+    
+
+    - name: install node
+      apt:
+        pkg:
+          - nodejs
+          - npm
+    - name: start node service
+      service: 
+        name: nginx
+        state: started
+    - name: check status of node
+      shell: "ps aux | grep node"
+      register: app_status
+    - debug: 
+        msg: "{{app_status.stdout_lines}}"
+      
+      
+      
